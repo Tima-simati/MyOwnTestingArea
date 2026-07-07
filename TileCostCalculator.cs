@@ -39,6 +39,7 @@ namespace ConsoleApp1
             if (floorShape != RECT_FLOOR || floorShape != TRI_FLOOR) //check for invalid input for floor shape
             {
                 Console.WriteLine("No valid shape. Please enter a valid shape. Restart the calculator.");
+                return;
             }
 
             Console.WriteLine("Please enter the cost of the tile per square foot");
