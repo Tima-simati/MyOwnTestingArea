@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Hangman
 {
@@ -20,9 +20,26 @@ namespace Hangman
             int randomIndex = rng.Next(START_OF_LIST, endOfList);
             string chosenWord = boxOfWords[randomIndex];
             //write a block that helps you find out if a character is part of a string
-            char userInput = Convert.ToString(Console.ReadLine());
+            string userInput = Convert.ToString(Console.ReadLine());
+            char userInputChar = userInput[0];
+            if(chosenWord.Contains(userInputChar))
+            {
+                Console.WriteLine("You guessed a letter correct.");
+            }else
+            {
+                wrongGuesses++;
+                int guessesLeft = WRONG_GUESSES_MAX - wrongGuesses;
+                Console.WriteLine($"Wrong guess! You have only {guessesLeft} guesses left.");
+            }
 
             //write some code to find the position of a specific letter in a word ( for loops seem like a good idea)
+            for(int i = 0; i < chosenWord.Length; i++)
+            {
+                if(userInputChar == chosenWord(i)) 
+                { 
+                                    
+                } 
+            }
 
 
             //write a block that outputs the current state of the game (like in the screenshot). Console.Clear() can help to make things look better
