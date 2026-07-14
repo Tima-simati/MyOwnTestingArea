@@ -13,6 +13,8 @@ namespace Hangman
             int endOfList = boxOfWords.Count - 1;//last index of list
             const int WRONG_GUESSES_MAX = 6;     //allowed wrong guesses
             int wrongGuesses = 0;                //counter for wrong guesses
+            int indexOfGuessedChar = 0;              //index of character in the word to be guessed
+
 
             Console.WriteLine("A word will now be picked. Try to guess the letters of the word.");
             Console.WriteLine("If you guess 6 times the letter wrong, you lose! Good luck.");
@@ -20,32 +22,40 @@ namespace Hangman
             int randomIndex = rng.Next(START_OF_LIST, endOfList);
             string chosenWord = boxOfWords[randomIndex];
             //write a block that helps you find out if a character is part of a string
+            Console.WriteLine("Your guess is: ");
+            Console.ReadKey();
             string userInput = Convert.ToString(Console.ReadLine());
             char userInputChar = userInput[0];
-            if(chosenWord.Contains(userInputChar))
+            string outputString = new string('_', chosenWord.Length); //parts of the chosenWord, which will be revealed
+
+            if (chosenWord.Contains(userInputChar))
             {
                 Console.WriteLine("You guessed a letter correct.");
-            }else
+            }
+            else
             {
                 wrongGuesses++;
                 int guessesLeft = WRONG_GUESSES_MAX - wrongGuesses;
                 Console.WriteLine($"Wrong guess! You have only {guessesLeft} guesses left.");
             }
 
+
             //write some code to find the position of a specific letter in a word ( for loops seem like a good idea)
-            for(int i = 0; i < chosenWord.Length; i++)
+            //write a block that outputs the current state of the game (like in the screenshot).
+            //Console.Clear() can help to make things look better
+            Console.Clear();
+            for (int i = 0; i < chosenWord.Length; i++)
             {
-                if(userInputChar == chosenWord(i)) 
-                { 
-                                    
-                } 
+                if (chosenWord[i] == userInputChar)
+                {
+                    indexOfGuessedChar = i;
+                    outputString = outputString.Insert(indexOfGuessedChar, userInputChar.ToString());
+                }
+
+
             }
+            Console.WriteLine(outputString);
 
-
-            //write a block that outputs the current state of the game (like in the screenshot). Console.Clear() can help to make things look better
-
-
-            //look at console.readkey(); to make things nicer
 
             // pack all of this in a loop, and keep track of tries
             Console.WriteLine("This is the debugger working.");
