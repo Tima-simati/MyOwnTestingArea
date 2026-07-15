@@ -13,37 +13,38 @@ namespace Hangman
             int endOfList = boxOfWords.Count - 1;//last index of list
             const int WRONG_GUESSES_MAX = 6;     //allowed wrong guesses
             int wrongGuesses = 0;                //counter for wrong guesses
-            int indexOfGuessedChar = 0;              //index of character in the word to be guessed
+
 
             Console.WriteLine("A word will now be picked. Try to guess the letters of the word.");
             Console.WriteLine("If you guess 6 times the letter wrong, you lose! Good luck.");
             Random rng = new Random();
             int randomIndex = rng.Next(START_OF_LIST, endOfList);
-            string chosenWord = boxOfWords[randomIndex];
-            string outputString = new string('_', chosenWord.Length); //parts of the chosenWord, which will be revealed
-
+            char[] chosenWord = boxOfWords[randomIndex].ToCharArray();
+            char[] outputString = new char[chosenWord.Length]; //char array which shows the state of guessed characters
+            for (int i = 0; i < outputString.Length; i++)
+            {
+                outputString[i] = '_';
+            }
+            //Console.Clear();
             while (wrongGuesses < WRONG_GUESSES_MAX)
             {
                 Console.WriteLine("Your guess is: ");
-                string userInput = Convert.ToString(Console.ReadLine());
-
-                char userInputChar = userInput[0];
-
-                if (chosenWord.Contains(userInputChar))
+                char userInput = Console.ReadKey().KeyChar;
+                Console.WriteLine();
+                if (chosenWord.Contains(userInput))
                 {
                     //tracking of right guessing and winning condition
-                    Console.Clear();
+                    
                     Console.WriteLine("You guessed a letter correct.");
-                    //Console.ReadKey();
-                    for (int i = 0; i < chosenWord.Length; i++)
+                    for (int i = 0; i < outputString.Length; i++)
                     {
-                        if (chosenWord[i] == userInputChar)
+                        if (chosenWord[i] == userInput)
                         {
-                            indexOfGuessedChar = i;
-                            outputString = outputString.Insert(indexOfGuessedChar, userInputChar.ToString());
+                            outputString[i] = userInput;
                         }
+                        Console.Write(outputString[i]);
                     }
-                    Console.WriteLine(outputString);
+                    Console.WriteLine();
                 }
                 else
                 {
@@ -52,7 +53,7 @@ namespace Hangman
                     int guessesLeft = WRONG_GUESSES_MAX - wrongGuesses;
                     Console.WriteLine($"Wrong guess! You have only {guessesLeft} guesses left.");
                 }
-                if (outputString.Equals(chosenWord))
+                if (outputString.SequenceEqual(chosenWord)) // chosenWord.SequenceEqual(outputString)
                 {
                     Console.WriteLine("You did it. You guessed the word correctly! You win.");
                     return;
