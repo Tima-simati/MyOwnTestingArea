@@ -14,18 +14,17 @@ namespace Hangman
             const int WRONG_GUESSES_MAX = 6;     //allowed wrong guesses
             int wrongGuesses = 0;                //counter for wrong guesses
 
-
             Console.WriteLine("A word will now be picked. Try to guess the letters of the word.");
             Console.WriteLine("If you guess 6 times the letter wrong, you lose! Good luck.");
             Random rng = new Random();
             int randomIndex = rng.Next(START_OF_LIST, endOfList);
             char[] chosenWord = boxOfWords[randomIndex].ToCharArray();
-            char[] outputString = new char[chosenWord.Length]; //char array which shows the state of guessed characters
-            for (int i = 0; i < outputString.Length; i++)
+            char[] outputString = new char[chosenWord.Length];  //char array which shows the state of guessed characters
+            int lastIndexOfWord = (outputString.Length - 1);    //last index of chosenWord
+            for (int i = 0; i <= lastIndexOfWord; i++)
             {
                 outputString[i] = '_';
             }
-            //Console.Clear();
             while (wrongGuesses < WRONG_GUESSES_MAX)
             {
                 Console.WriteLine("Your guess is: ");
@@ -33,10 +32,9 @@ namespace Hangman
                 Console.WriteLine();
                 if (chosenWord.Contains(userInput))
                 {
-                    //tracking of right guessing and winning condition
-                    
+                    //tracking of right letter guessing
                     Console.WriteLine("You guessed a letter correct.");
-                    for (int i = 0; i < outputString.Length; i++)
+                    for (int i = 0; i <= lastIndexOfWord; i++)
                     {
                         if (chosenWord[i] == userInput)
                         {
@@ -51,13 +49,24 @@ namespace Hangman
                     //tracking of wrong guesses and losing condition
                     wrongGuesses++;
                     int guessesLeft = WRONG_GUESSES_MAX - wrongGuesses;
-                    Console.WriteLine($"Wrong guess! You have only {guessesLeft} guesses left.");
+                    Console.Clear();
+                    Console.WriteLine($"Wrong guess! Letter <{userInput}> is not included. You have only {guessesLeft} guesses left.");
+                    Console.WriteLine(outputString);
                 }
-                if (outputString.SequenceEqual(chosenWord)) // chosenWord.SequenceEqual(outputString)
+                //Winning Condition
+                for (int i = 0; i <= lastIndexOfWord; i++)
                 {
-                    Console.WriteLine("You did it. You guessed the word correctly! You win.");
-                    return;
+                    if (outputString[i] != chosenWord[i])
+                    {
+                        break;
+                    }
+                    if (i == lastIndexOfWord && outputString[i] == chosenWord[i])
+                    {
+                        Console.WriteLine("You did it. You guessed the word correctly! You win.");
+                        return;
+                    }
                 }
+                //Losing Condition
                 if (wrongGuesses == WRONG_GUESSES_MAX)
                 {
                     Console.WriteLine("You are out of guesses. You lose!");
